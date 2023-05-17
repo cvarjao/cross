@@ -112,6 +112,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [generate-matrix]
     if: github.event_name == 'push' && needs.generate-matrix.outputs.matrix != '{}' && needs.generate-matrix.outputs.matrix != '[]' && needs.generate-matrix.outputs.matrix != ''
+    permissions:
+      contents: read
+      packages: write
     strategy:
       fail-fast: false
       matrix:
