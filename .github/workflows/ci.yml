@@ -133,6 +133,8 @@ jobs:
       coverage-artifact: ${{ steps.cov.outputs.artifact-name }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          repository: cross-rs/cross
 
       - uses: ./.github/actions/setup-rust
 
