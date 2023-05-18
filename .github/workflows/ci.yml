@@ -240,7 +240,6 @@ jobs:
           )
         run: >
           cargo xtask build-docker-image -v --repository ghcr.io/${{ github.repository_owner }} --tag "latest" --push "${TARGET}${SUB:+.$SUB}"
-          --push ${{ matrix.target}}
           --build-arg "ANDROID_NDK=${{ env.ANDROID_NDK }}"
           --build-arg "ANDROID_SDK=${{ env.ANDROID_SDK }}"
           --build-arg "ANDROID_VERSION=${{ env.ANDROID_VERSION }}"
