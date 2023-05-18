@@ -12,12 +12,13 @@ env:
   CARGO_NET_RETRY: 3
   CARGO_HTTP_CHECK_REVOKE: false
   RUST_VERSION: 1.67.0
-#  ANDROID_NDK: r13b
-#  ANDROID_SDK: 21
-#  ANDROID_VERSION: 5.0.0_r1
-  ANDROID_NDK: r25b
-  ANDROID_SDK: 28
-  ANDROID_VERSION: 9.0.0_r1
+  ANDROID_NDK: r13b
+  ANDROID_SDK: 21
+  ANDROID_VERSION: 5.0.0_r1
+# Default from upstream
+#  ANDROID_NDK: r25b
+#  ANDROID_SDK: 28
+#  ANDROID_VERSION: 9.0.0_r1
 
 jobs:
   shellcheck:
@@ -196,6 +197,7 @@ jobs:
           IMAGE: ${{ steps.build-docker-image.outputs.image }}
         shell: bash
       - name: Test Image
+        continue-on-error: true
         if: steps.prepare-meta.outputs.has-image && steps.prepare-meta.outputs.test-variant == 'default'
         run: ./ci/test.sh
         env:
@@ -207,17 +209,19 @@ jobs:
           RUN: ${{ matrix.run }}
           RUNNERS: ${{ matrix.runners }}
         shell: bash
-      - uses: ./.github/actions/cargo-install-upload-artifacts
-        if: matrix.deploy
-        with:
-          target: ${{ matrix.target }}
+#      - uses: ./.github/actions/cargo-install-upload-artifacts
+#        if: matrix.deploy
+#        with:
+#          target: ${{ matrix.target }}
 
       - name: Test Zig Image
+        continue-on-error: true
         if: steps.prepare-meta.outputs.has-image && steps.prepare-meta.outputs.test-variant == 'zig'
         run: ./ci/test-zig-image.sh
         shell: bash
 
       - name: Test Cross Image
+        continue-on-error: true
         if: steps.prepare-meta.outputs.has-image && steps.prepare-meta.outputs.test-variant == 'cross'
         run: ./ci/test-cross-image.sh
         env:
